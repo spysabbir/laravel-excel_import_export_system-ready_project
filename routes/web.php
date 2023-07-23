@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\Admin\EmployeeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,3 +30,7 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('/employee', [EmployeeController::class, 'index'])->name('employee.index');
+Route::post('/employee/import', [EmployeeController::class, 'import'])->name('employee.import');
+Route::get('/export/import', [EmployeeController::class, 'export'])->name('employee.export');
