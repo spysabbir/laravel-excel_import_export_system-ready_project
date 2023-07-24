@@ -3,15 +3,35 @@
 namespace App\Exports;
 
 use App\Models\User;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class EmployeeExport implements FromCollection
+
+class EmployeeExport implements FromQuery, WithHeadings
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
+    use Exportable;
+
+    public function query()
     {
-        return User::select('name', 'emaial', 'password')->get();
+        return User::query()->select('name', 'email', 'created_at');
+    }
+
+    public function headings(): array
+    {
+        return [
+            'Name',
+            'Email',
+            'Created At',
+        ];
+    }
+
+    public function map($row): array
+    {
+        return [
+            $row->name,
+            $row->email,
+            $row->created_at->format('Y-m-d H:i:s'),
+        ];
     }
 }
